@@ -1,21 +1,34 @@
 import { useDispatch, useSelector } from "react-redux";
 import { OrderActions } from "../store/orderSlice";
 import { toast } from "react-toastify";
-import { ref, set } from "firebase/database";
+import { ref, remove, set } from "firebase/database";
 import { db } from "../FirebaseConfig";
 
 const HomeItem = ({ item }) => {
   const dispatch = useDispatch();
   const order = useSelector((store) => store.order);
+  console.log(order);
   const isInOrder = order.includes(item.id);
   const handleAddToOrder = async () => {
     try {
-      // dispatch(OrderActions.addToOrder(item.id));
-      await set(ref(db, `orders/${item.id}`), item);
+     dispatch(OrderActions.addToOrder(item.id));
+      await set(ref(db, `orders/${item.id}`), item.id);
       toast.success("Product added successfully!");
     } catch (error) {
       toast.error(`Error adding product: ${error.message}`);
       console.error(`Error adding product: ${error.message}`);
+    }
+  };
+  const handleRemoveItem = async () => {
+    try {
+      dispatch(OrderActions.removeFromOrder(item.id));
+      const dbRef = ref(db, `orders/${item.id}`);
+      await remove(dbRef);
+      toast.success('Product removed successfully!');
+    } catch (error) {
+      dispatch(OrderActions.addToOrder(item.id));
+      toast.error(`Error removing product: ${error.message}`);
+      console.error('Error removing product:', error.message);
     }
   };
 
@@ -34,9 +47,9 @@ const HomeItem = ({ item }) => {
       </div>
       <button
         className={`btn m-2 ${isInOrder ? 'btn-danger' : 'btn-primary'}`}
-        onClick={handleAddToOrder}
+        onClick={isInOrder ? handleRemoveItem : handleAddToOrder}
       >
-       Order Now
+        {isInOrder ? 'Remove' : 'Order Now'}
       </button>
     </div>
   );

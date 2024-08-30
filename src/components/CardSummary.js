@@ -3,17 +3,17 @@ import { useSelector } from "react-redux";
 
 const CardSummary = () => {
   const cardItemIds = useSelector((state) => state.order);
-  // const items = useSelector((state) => state.items);
-  // const finalItems = items.filter((item) => {
-  //   const itemIndex = cardItemIds.indexOf(item.id);
-  //   return itemIndex >= 0;
-  // });
+  const items = useSelector((state) => state.items);
+  const finalItems = items.filter((item) => {
+    const itemIndex = cardItemIds.indexOf(item.id);
+    return itemIndex >= 0;
+  });
 
   const CONVENIENCE_FEES = 99;
   let totalItem = cardItemIds.length;
   let totalMRP = 0;
 
-  cardItemIds.forEach((orderItem) => {
+  finalItems.forEach((orderItem) => {
     totalMRP += orderItem.productPrice;
   });
 

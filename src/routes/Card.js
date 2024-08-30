@@ -1,28 +1,28 @@
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import CardSummary from "../components/CardSummary";
 import OrderItems from "../components/OrderItems";
-import { useEffect,  useState } from "react";
+import { useEffect,  useMemo,  useState } from "react";
 
 const Card = () => {
-  // const items = useSelector((store) => store.items);
+  const items = useSelector((store) => store.items);
   const order = useSelector((store) => store.order);
   const [searchVal, setSearchVal] = useState("");
   const [products, setProducts] = useState([]);
-  // const dispatch = useDispatch()
-  // const finalItems = useMemo(
-  //   () => items.filter((item) => order.includes(item.id)),
-  //   [items, order]
-  // );
+  const finalItems = useMemo(
+    () => items.filter((item) => order.includes(item.id)),
+    [items, order]
+  );
+
   useEffect(() => {
-    setProducts(order);
-  }, [order]);
+    setProducts(finalItems);
+  }, [finalItems]);
   const handleSearch = (e) => {
     const searchValue = e.target.value;
     setSearchVal(searchValue);
     if (searchValue === "") {
-      setProducts(order);
+      setProducts(finalItems);
     } else {
-      const filterBySearch = order.filter((product) =>
+      const filterBySearch = finalItems.filter((product) =>
         product.productName.toLowerCase().includes(searchValue.toLowerCase())
       );
       setProducts(filterBySearch);

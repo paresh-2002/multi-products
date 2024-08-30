@@ -14,7 +14,7 @@ const FetchOrder = () => {
           if (snapshot.exists()) {
             const data = snapshot.val();
             const orders = Object.values(data);
-            console.log('Fetched orders:', orders);
+            // console.log('Fetched orders:', orders);
             dispatch(OrderActions.setOrders(orders))
           } else {
             console.warn('Fetched data is empty.');
