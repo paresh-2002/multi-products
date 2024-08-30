@@ -46,7 +46,7 @@ const AddItem = () => {
       };
       await set(dbRef(db, `products/${productId}`), productData);
       setGetItem({ productName: "", productPrice: "" });
-      setProductImg("");
+      setProductImg(null);
       setError("");
       toast.success("Product added successfully");
     } catch (error) {

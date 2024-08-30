@@ -6,8 +6,11 @@ const itemsSlice = createSlice({
     reducers:{
         addInitialItems:(state, action)=>{
             return action.payload
+            
         }
     }
 })
+
+
 export const itemsActions = itemsSlice.actions
 export default itemsSlice

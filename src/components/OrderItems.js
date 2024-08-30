@@ -7,14 +7,17 @@ import { ref, remove } from "firebase/database";
 
 const OrderItems = ({ item }) => {
   const dispatch = useDispatch();
-   
-
-  const handleRemoveItem = async () => {
-    dispatch(OrderActions.removeFromOrder(item.id));
-    const dbRef = ref(db, `orders/${item.id}`);
-    await remove(dbRef);
-    toast.success("Product removed Successfully");
-    //window.location.reload();
+    const handleRemoveItem = async () => {
+      try {
+        dispatch(OrderActions.removeFromOrder(item.id));
+        const dbRef = ref(db, `orders/${item.id}`);
+        await remove(dbRef);
+        toast.success('Product removed successfully!');
+        //window.location.reload();
+      } catch (error) {
+        toast.error(`Error removing product: ${error.message}`);
+        console.error('Error removing product:', error.message);
+      }
     };
 
   return (
@@ -29,7 +32,6 @@ const OrderItems = ({ item }) => {
           <span className="text-xl font-bold text-[#282c3f]">Rs {item.productPrice}</span>
         </div>
       </div>
-
       <div className="absolute text-[25px] w-3.5 h-3.5 cursor-pointer right-[18px] top-2.5" onClick={handleRemoveItem}>
         <RiDeleteBin5Fill />
       </div>

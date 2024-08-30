@@ -1,55 +1,34 @@
-import { useSelector } from "react-redux";
-import CardSummary from "../components/CardSummary ";
+import {  useSelector } from "react-redux";
+import CardSummary from "../components/CardSummary";
 import OrderItems from "../components/OrderItems";
-import { useEffect, useMemo, useState } from "react";
-import { get, ref } from "firebase/database";
-import { db } from "../FirebaseConfig";
+import { useEffect,  useState } from "react";
 
 const Card = () => {
-  const items = useSelector((store) => store.items);
+  // const items = useSelector((store) => store.items);
   const order = useSelector((store) => store.order);
   const [searchVal, setSearchVal] = useState("");
   const [products, setProducts] = useState([]);
-
-  const finalItems = useMemo(
-    () => items.filter((item) => order.includes(item.id)),
-    [items, order]
-  );
+  // const dispatch = useDispatch()
+  // const finalItems = useMemo(
+  //   () => items.filter((item) => order.includes(item.id)),
+  //   [items, order]
+  // );
   useEffect(() => {
-    setProducts(finalItems);
-  }, [finalItems]);
+    setProducts(order);
+  }, [order]);
   const handleSearch = (e) => {
     const searchValue = e.target.value;
     setSearchVal(searchValue);
     if (searchValue === "") {
-      setProducts(finalItems);
+      setProducts(order);
     } else {
-      const filterBySearch = finalItems.filter((product) =>
+      const filterBySearch = order.filter((product) =>
         product.productName.toLowerCase().includes(searchValue.toLowerCase())
       );
       setProducts(filterBySearch);
     }
   };
 
-  useEffect(() => {
-    const fetchOrders = () => {
-      const ordersRef = ref(db, 'orders');
-      get(ordersRef)
-        .then((snapshot) => {
-          if (snapshot.exists()) {
-            const orders = snapshot.val();
-            console.log('Fetched orders:', orders);
-            // Handle orders (e.g., update state or display them in UI)
-          } else {
-            console.log('No orders found.');
-          }
-        })
-        .catch((error) => {
-          console.error('Error fetching orders:', error.message);
-        });
-    };
-    fetchOrders();
-  }, []);
   return (
     <main className=" container mx-auto px-4">
       <div className="max-w-full">

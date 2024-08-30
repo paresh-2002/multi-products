@@ -14,6 +14,7 @@ import AddItem from "../components/AddItem";
 import { useSelector } from "react-redux";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import FetchOrder from "../components/FetchOrder";
 
 const RequireAuth = ({ children }) => {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -51,6 +52,7 @@ function App() {
                 <RequireAuth>
                   <Navbar />
                   <Card />
+                  <FetchOrder/>
                   <Footer />
                 </RequireAuth>
               }
