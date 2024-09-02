@@ -6,6 +6,7 @@ const orderSlice = createSlice({
     reducers:{
         addToOrder: (state, action) => {
             state.push(action.payload);
+           
           },
           removeFromOrder: (state, action) => {
             return state.filter((itemId) => itemId !== action.payload);
